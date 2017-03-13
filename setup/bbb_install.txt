@@ -1,0 +1,73 @@
+# Expand the SD Card
+http://elinux.org/Beagleboard:Expanding_File_System_Partition_On_A_microSD
+
+# change hostname
+vi /etc/hostname
+
+# Copy hosts
+smbclient //10.0.0.1/d --user="Frank Tkalcevic"%password -c get /Documents/etc/hosts.txt
+
+# set up wifi
+/etc/network/interfaces
+
+allow-hotplug wlan0
+iface wlan0 inet static
+        wpa-driver wext
+        address 10.0.0.42
+        netmask 255.255.255.0
+        network 10.0.0.0
+        gateway 10.0.0.138
+        wpa-ssid WiFi-GGK6
+        # wpa_passphrase WiFi-GGK6 PaSsWoRd
+        wpa-psk fdf6df177b8b4f92249420fb9763caf67a80803cac30617be9b9f9d8266c5353
+
+
+/etc/udev/rules.d/70-persistent-net.rules
+
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:13:ef:f0:05:b2", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME="wlan0"
+
+# configure package sources ()
+# Should alreay be done - http://www.machinekit.io/docs/getting-started/installing-packages/#configure-apt
+
+
+# remove machinekit binaries
+sudo apt-get remove --purge machinekit
+
+# install packages
+sudo apt-get install smbclient vim
+
+# dev packages
+sudo apt-get install libczmq-dev python-zmq libjansson-dev pkg-config libwebsockets-dev libxenomai-dev python-pyftpdlib cython bwidget lsb-release
+sudo apt-get install git dpkg-dev
+sudo apt-get install --no-install-recommends devscripts equivs
+
+
+
+# disable unused services
+sudo update-rc.d apache2 disable
+
+#disable X
+sudo systemctl set-default multi-user.target
+
+
+
+
+
+
+# build 
+http://www.machinekit.io/docs/developing/machinekit-developing/
+
+
+debian/configure -prx
+sudo mk-build-deps -ir
+cd src
+./autogen.sh
+./configure --with-platform-beaglebone
+
+# create swap
+sudo dd if=/dev/zero of=/media/swapfile.img bs=1024 count=1M
+sudo mkswap /media/swapfile.img 
+sudo swapon /media/swapfile.img 
+
+make
+sudo make setuid
