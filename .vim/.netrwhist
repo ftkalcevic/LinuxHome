@@ -1,0 +1,9 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =7
+let g:netrw_dirhist_1='/home/frankt/tmp/lcd4linux'
+let g:netrw_dirhist_2='/home/frankt/dev/hid/hidcomp'
+let g:netrw_dirhist_3='/home/frankt/git/emc2/src/emc/toolstore'
+let g:netrw_dirhist_4='/home/frankt/git/emc2/src/emc/toolstore/sql'
+let g:netrw_dirhist_5='/home/frankt/git/emc2-2.5/include'
+let g:netrw_dirhist_6='/lib/modules/2.6.32-122-rtai/build'
+let g:netrw_dirhist_7='/home/frankt/git/ikfast/src/emc/kinematics/lapack/lapack/blas'
