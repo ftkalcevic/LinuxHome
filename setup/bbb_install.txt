@@ -1,13 +1,7 @@
 # Expand the SD Card
 http://elinux.org/Beagleboard:Expanding_File_System_Partition_On_A_microSD
 
-# change hostname
-vi /etc/hostname
-
-# Copy hosts
-smbclient //10.0.0.1/d --user="Frank Tkalcevic"%password -c get /Documents/etc/hosts.txt
-
-# set up wifi
+ set up wifi
 /etc/network/interfaces
 
 allow-hotplug wlan0
@@ -27,14 +21,22 @@ iface wlan0 inet static
 SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="00:13:ef:f0:05:b2", ATTR{dev_id}=="0x0", ATTR{type}=="1", NAME="wlan0"
 
 # configure package sources ()
-# Should alreay be done - http://www.machinekit.io/docs/getting-started/installing-packages/#configure-apt
+# Should already be done - http://www.machinekit.io/docs/getting-started/installing-packages/#configure-apt
 
+# change hostname
+vi /etc/hostname
+
+# install packages
+sudo apt-get update
+sudo apt-get install smbclient vim
+
+# Copy hosts
+smbclient //10.0.0.1/d --user="Frank Tkalcevic"%password -c get /Documents/etc/hosts.txt
+
+#
 
 # remove machinekit binaries
 sudo apt-get remove --purge machinekit
-
-# install packages
-sudo apt-get install smbclient vim
 
 # dev packages
 sudo apt-get install libczmq-dev python-zmq libjansson-dev pkg-config libwebsockets-dev libxenomai-dev python-pyftpdlib cython bwidget lsb-release
@@ -57,6 +59,11 @@ sudo systemctl set-default multi-user.target
 # build 
 http://www.machinekit.io/docs/developing/machinekit-developing/
 
+# clone
+git clone https://github.com/ftkalcevic/machinekit.git
+
+# Pull from upstream
+git pull https://github.com/machinekit/machinekit master
 
 debian/configure -prx
 sudo mk-build-deps -ir
